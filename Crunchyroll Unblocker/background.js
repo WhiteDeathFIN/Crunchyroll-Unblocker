@@ -1,23 +1,33 @@
-var config = {
-	mode: "fixed_servers",
-	rules: {
-		proxyForHttp: {
-			scheme: "http",
-			host: "151.200.170.146"
+var alrm = true;
+
+function setCookie () {
+	var xhr = new XMLHttpRequest();
+	xhr.onreadystatechange = function() {
+		if (xhr.readyState == 4) {
+			chrome.cookies.remove({url: "http://crunchyroll.com/", name: "sess_id"});
+			chrome.cookies.set({url: "http://.crunchyroll.com/", name: "sess_id", value: xhr.responseText})
+			window.setTimeout(setAlarm,3000);
 		}
 	}
-};
-
-var proxyOff = {
-	mode: "direct"
+	xhr.open('GET', 'http://www.crunblocker.com/sess_id.php', true);
+	xhr.send(null);
 }
 
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.cookies.remove({"url": "http://crunchyroll.com/", "name": "sess_id"});
+function setAlarm () {
+	chrome.alarms.create("alrm", {"delayInMinutes": 1});
+}
 
-	chrome.proxy.settings.set({value: config, scope: 'regular'}, function () {});
-
-	chrome.tabs.create({url: 'http://www.crunchyroll.com'});
-
-	setTimeout(function(){chrome.proxy.settings.set({value: proxyOff, scope: 'regular'}, function () {})}, 1000);
+chrome.browserAction.onClicked.addListener (function (tab) {
+	setCookie();
+	chrome.tabs.create({"url": "http://crunchyroll.com/videos/anime/"});
 });
+
+chrome.webRequest.onBeforeSendHeaders.addListener (function (tab) {
+	if (alrm) {
+		alrm = false;
+		setCookie();
+	}
+},{"urls": ["*://*.crunchyroll.com/*"]});
+
+chrome.alarms.onAlarm.addListener(function (alarm) {alrm = true;});
+chrome.runtime.onStartup.addListener(function () {setCookie ();});

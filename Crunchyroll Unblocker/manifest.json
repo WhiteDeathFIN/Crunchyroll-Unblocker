@@ -2,14 +2,18 @@
 	"manifest_version": 2,
 
 	"name": "Crunchyroll Unblocker",
-	"description": "Makes Crunchyroll believe you are from the US.",
-	"version": "0.7",
+	"description": "Watch region blocked anime on Crunchyroll from outside the US!",
+	"version": "0.8",
 
 	"permissions": [
+		"alarms",
+		"background",
+		"webRequest",
+		"webRequestBlocking",
 		"cookies",
 		"tabs",
-		"proxy",
-		"http://crunchyroll.com/"
+		"https://*/*",
+		"http://*/*"
 	],
 	
 	"browser_action": {
@@ -23,7 +27,6 @@
 	},
 	
 	"background": {
-		"scripts": ["background.js"],
-		"persistent": false
+		"scripts": ["background.js"]
 	}
 }
