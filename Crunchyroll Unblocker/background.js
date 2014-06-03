@@ -1,6 +1,10 @@
 function setCookie () {
 	var xhr = new XMLHttpRequest();
-	xhr.onreadystatechange = function() {
+	xhr.timeout = 5000;
+	xhr.ontimeout = function () {
+		chrome.notifications.create("", {type: "basic", title: "Request Timed Out", message: "Crunchyroll Unblocker has encounted an error", iconUrl: "crunblock128.png"}, function (notificationId) {});
+	}
+	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
 			chrome.cookies.remove({url: "http://crunchyroll.com/", name: "sess_id"});
 			chrome.cookies.set({url: "http://.crunchyroll.com/", name: "sess_id", value: xhr.responseText});
