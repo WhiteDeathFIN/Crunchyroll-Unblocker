@@ -3,18 +3,22 @@
 
 	"name": "Crunchyroll Unblocker",
 	"description": "Watch region blocked anime on Crunchyroll from outside the US!",
-	"version": "0.8",
+	"version": "0.9,
 
 	"permissions": [
-		"alarms",
 		"background",
-		"webRequest",
-		"webRequestBlocking",
+		"browsingData",
 		"cookies",
+		"storage",
 		"tabs",
-		"https://*/*",
-		"http://*/*"
+		"<all_urls>"
 	],
+	
+	"content_scripts": [{
+      "js": [ "content.js" ],
+	  "matches": ["<all_urls>"],
+	  "run_at": "document_start"
+   }],
 	
 	"browser_action": {
 		"default_icon": "crunblock128.png"
