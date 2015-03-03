@@ -1,4 +1,4 @@
-function setCookie () {
+function setCookie (tld) {
 	var xhr = new XMLHttpRequest();
 	xhr.timeout = 5000;
 	xhr.ontimeout = function () {
@@ -6,8 +6,8 @@ function setCookie () {
 	}
 	xhr.onreadystatechange = function () {
 		if (xhr.readyState == 4) {
-			chrome.cookies.remove({url: "http://crunchyroll.com/", name: "sess_id"});
-			chrome.cookies.set({url: "http://.crunchyroll.com/", name: "sess_id", value: xhr.responseText});
+			chrome.cookies.remove({url: "http://crunchyroll" + tld + "/", name: "sess_id"});
+			chrome.cookies.set({url: "http://.crunchyroll" + tld + "/", name: "sess_id", value: xhr.responseText});
 		}
 	}
 	xhr.open("GET", "http://www.crunblocker.com/sess_id.php", true);
@@ -15,16 +15,14 @@ function setCookie () {
 }
 
 chrome.browserAction.onClicked.addListener (function () {
-	setCookie();
+	setCookie(".com");
 	chrome.tabs.create({url: "http://crunchyroll.com/videos/anime/"});
 });
 
 chrome.runtime.onMessage.addListener(function (message) { 
-	if (message.msg == "SET") { 
-		setCookie (); 
-	} else if (message.msg == "REDIRECT") {
-		chrome.tabs.update({url: "http://www.crunchyroll.com/"});
-	}
+	setCookie (message.msg); 
 });
 
-chrome.runtime.onStartup.addListener(function () {setCookie ();});
+chrome.runtime.onStartup.addListener(function () {
+	setCookie (".com");
+});
