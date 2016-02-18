@@ -2,7 +2,10 @@
  * Created by Santeri Hetekivi on 2/18/16.
  */
 
-//Saving options to browser's storage
+// Default page for first time
+var defaultPage = "videos/anime";
+
+// Saving options to browser's storage
 function save_options() {
     var startPage = document.getElementById("startPage").value;
     chrome.storage.sync.set({
@@ -20,7 +23,7 @@ function save_options() {
 // Restoring options from browser's storage
 function restore_options() {
     chrome.storage.sync.get({
-        startPage: "home/queue"
+        startPage: defaultPage
     }, function(items) {
         document.getElementById('startPage').value = items.startPage;
     });
