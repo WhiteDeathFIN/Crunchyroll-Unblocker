@@ -14,11 +14,20 @@ function setCookie (tld) {
 	xhr.send(null);
 }
 
+function openStartPage()
+{
+	chrome.storage.sync.get({
+		startPage: "home/queue"
+	}, function(items) {
+		// Page that opens when done.
+		// This fork sets this to queue page.
+		chrome.tabs.create({url: "http://www.crunchyroll.com/"+items.startPage});
+	});
+}
+
 chrome.browserAction.onClicked.addListener (function () {
 	setCookie(".com");
-	// Page that opens when done.
-	// This fork sets this to queue page.
-	chrome.tabs.create({url: "http://www.crunchyroll.com/home/queue"});
+	openStartPage();
 });
 
 chrome.runtime.onMessage.addListener(function (message) { 
