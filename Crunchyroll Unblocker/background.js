@@ -1,6 +1,7 @@
 // Default page for first time
-var defaultPage = "videos/anime";
-var mainUrl = "http://www.crunchyroll.com/";
+var DEFAULT_PAGE = "videos/anime";
+//Main url for the site
+var MAIN_URL = "http://www.crunchyroll.com/";
 
 function setCookie (tld) {
 	var xhr = new XMLHttpRequest();
@@ -21,11 +22,11 @@ function setCookie (tld) {
 function openStartPage()
 {
 	chrome.storage.sync.get({
-		startPage: defaultPage
+		startPage: DEFAULT_PAGE
 	}, function(items) {
 		// Page that opens when done.
 		// This fork sets this to queue page.
-		chrome.tabs.create({url: mainUrl + items.startPage});
+		chrome.tabs.create({url: MAIN_URL + items.startPage});
 	});
 }
 
