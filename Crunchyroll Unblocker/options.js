@@ -20,7 +20,7 @@ function save_options() {
     status.textContent = STATUS_SAVING;
     status.style.color = COLOR_RED;
     chrome.storage.sync.set({
-        startPage: DEFAULT_PAGE
+        startPage: startPage
     }, function() {
         // Update status to let user know options were saved.
         status.textContent = STATUS_SAVED;
